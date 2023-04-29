@@ -1,14 +1,18 @@
 <script lang="ts">
+	import SvgLine from './SvgLine.svelte';
+	import SvgPoint from './SvgPoint.svelte';
+	import type { Scene } from './curves';
+
 	export let scene: Scene;
 
-	let t = 0;
+	let t = 0.5;
 
 	const colors = ['red', 'blue', 'green', 'magenta', 'orange', 'olive', 'brown'];
 </script>
 
 <div class="container">
 	<div class="controls">
-		t: <input type="number" min="0" step="0.05" max="1" bind:value={t} />
+		t = <input type="number" min="0" step="0.05" max="1" bind:value={t} />
 	</div>
 
 	<svg width="100%" height="500">
@@ -18,21 +22,16 @@
 
 			{#each scene.objects as object, i}
 				{#if object.shape === 'dynamicPoint'}
-					{@const point = object.eval(t)}
-					{@const x = point.x}
-					{@const y = point.y}
-
-					<circle cx={x} cy={y} r="2" fill={colors[i % colors.length]} />
-					<g transform="matrix(1, 0, 0, -1, 0, 0)">
-						<text
-							{x}
-							y={-y}
-							dx={2}
-							dy={-2}
-							fill={colors[i % colors.length]}
-							style="font-size: 0.5em">{object.label}</text
-						>
-					</g>
+					<SvgPoint point={object.eval(t)} label={object.label} color={colors[i % colors.length]} />
+				{:else if object.shape === 'point'}
+					<SvgPoint point={object} label={object.label} color={colors[i % colors.length]} />
+				{:else if object.shape === 'dynamicLine'}
+					<SvgLine start={object.start.eval(t)} end={object.end.eval(t)} color="#666" />
+				{:else if object.shape === 'path'}
+					<path d={object.path} stroke="#000" fill="transparent" 
+                    />
+                    <!-- style:stroke-dasharray="1000"
+                    style:stroke-dashoffset={(1-t) * 1000}  -->
 				{/if}
 			{/each}
 		</g>

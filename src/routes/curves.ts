@@ -1,5 +1,5 @@
 
-type Point = {
+export type Point = {
     x: number,
     y: number,
     label?: string,
@@ -28,7 +28,7 @@ function add(p: DynamicPoint, q: DynamicPoint): DynamicPoint {
     };
 }
 
-type DynamicPoint = {
+export type DynamicPoint = {
     shape: 'dynamicPoint'
     eval(t: number): Point,
     label?: string
@@ -54,13 +54,26 @@ function lerp(p: DynamicPoint | Point, q: DynamicPoint | Point, label: string): 
     return r;
 }
 
-type DynamicLine = {
+export type DynamicLine = {
     shape: 'dynamicLine'
     start: DynamicPoint
     end: DynamicPoint
 }
 
-type Shape = Point | DynamicPoint | DynamicLine;
+function toLine(p: DynamicPoint | Point, q: DynamicPoint | Point): DynamicLine {
+    return {
+        start: toDynamicPoint(p),
+        end: toDynamicPoint(q),
+        shape: 'dynamicLine'
+    }
+}
+
+export type Path = {
+    path: string,
+    shape: 'path'
+}
+
+export type Shape = Point | DynamicPoint | DynamicLine | Path;
 
 
 export class Scene {
@@ -72,11 +85,15 @@ export class Scene {
     Q = lerp(this.B, this.C, 'Q')
     R = lerp(this.P, this.Q, 'R')
 
-    get objects() {
+    get objects(): Shape[] {
         return [
-            toDynamicPoint(this.A),
-            toDynamicPoint(this.B),
-            toDynamicPoint(this.C),
+            toLine(this.A, this.B),
+            toLine(this.B, this.C),
+            toLine(this.P, this.Q),
+            { shape: 'path', path: `M ${this.A.x} ${this.A.y} Q ${this.B.x} ${this.B.y} ${this.C.x} ${this.C.y}` },
+            this.A,
+            this.B,
+            this.C,
             this.P,
             this.Q,
             this.R]
