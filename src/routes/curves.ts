@@ -73,7 +73,12 @@ export type Path = {
     shape: 'path'
 }
 
-export type Shape = Point | DynamicPoint | DynamicLine | Path;
+export type DynamicPath = {
+    eval: (t: number) => string
+    shape: 'dynamicPath'
+}
+
+export type Shape = Point | DynamicPoint | DynamicLine | Path | DynamicPath;
 
 
 export interface Scene {
@@ -90,6 +95,8 @@ export class QScene implements Scene {
     R = lerp(this.P, this.Q, 'R')
 
     get objects(): Shape[] {
+
+
         return [
             toLine(this.A, this.B),
             toLine(this.B, this.C),
@@ -104,7 +111,27 @@ export class QScene implements Scene {
     }
 }
 
-export class CubicScene implements Scene{
+function createDynamicPath(curvePoint: DynamicPoint): DynamicPath {
+    return {
+        shape: "dynamicPath",
+        eval: (t: number) => {
+            if (t === 0)
+                return '';
+
+            // Draw the curve up to t as line segments, using max of 50 segments
+            const segments = Math.round(t * 50);
+            const parts: string[] = [];
+
+            for (let i = 0; i <= segments; i++) {
+                const p = curvePoint.eval(t * i / segments);
+                parts.push(`${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`);
+            }
+            return parts.join(' ')
+        }
+    };
+}
+
+export class CubicScene implements Scene {
     A: Point = { x: 10, y: 10, label: 'A', shape: 'point' };
     B: Point = { x: 45, y: 60, label: 'B', shape: 'point' };
     C: Point = { x: 100, y: -35, label: 'C', shape: 'point' };
@@ -121,6 +148,8 @@ export class CubicScene implements Scene{
 
 
     get objects(): Shape[] {
+
+
         return [
             toLine(this.A, this.B),
             toLine(this.B, this.C),
@@ -131,7 +160,8 @@ export class CubicScene implements Scene{
 
             toLine(this.S, this.T),
 
-            { shape: 'path', path: `M ${this.A.x} ${this.A.y} C ${this.B.x} ${this.B.y} ${this.C.x} ${this.C.y} ${this.D.x} ${this.D.y}` },
+            createDynamicPath(this.U),
+            // { shape: 'path', path: `M ${this.A.x} ${this.A.y} C ${this.B.x} ${this.B.y} ${this.C.x} ${this.C.y} ${this.D.x} ${this.D.y}` },
 
             this.A,
             this.B,
@@ -144,6 +174,6 @@ export class CubicScene implements Scene{
             this.U,
         ]
     }
-    
+
 
 }

@@ -17,8 +17,8 @@
 
 	<svg width="100%" height="500">
 		<g transform="scale(3) translate(10, 100) matrix(1, 0, 0, -1, 0, 0)">
-			<line x1="-1000" x2="1000" y1="0" y2="0" stroke="black" stroke-width=".5" />
-			<line x1="0" x2="0" y1="-1000" y2="1000" stroke="black" stroke-width=".5" />
+			<!-- <line x1="-1000" x2="1000" y1="0" y2="0" stroke="black" stroke-width=".5" />
+			<line x1="0" x2="0" y1="-1000" y2="1000" stroke="black" stroke-width=".5" /> -->
 
 			{#each scene.objects as object, i}
 				{#if object.shape === 'dynamicPoint'}
@@ -28,10 +28,9 @@
 				{:else if object.shape === 'dynamicLine'}
 					<SvgLine start={object.start.eval(t)} end={object.end.eval(t)} color="#666" />
 				{:else if object.shape === 'path'}
-					<path d={object.path} stroke="#000" fill="transparent" 
-                    />
-                    <!-- style:stroke-dasharray="1000"
-                    style:stroke-dashoffset={(1-t) * 1000}  -->
+					<path d={object.path} stroke="#000" fill="transparent" />
+				{:else if object.shape === 'dynamicPath'}
+					<path d={object.eval(t)} stroke="#000" fill="transparent" />
 				{/if}
 			{/each}
 		</g>
