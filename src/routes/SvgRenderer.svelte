@@ -17,15 +17,23 @@
 			<line x1="0" x2="0" y1="-1000" y2="1000" stroke="black" stroke-width=".5" />
 
 			{#each scene.objects as object, i}
-				{@const x = typeof object === 'function' ? object(t).x : object.x}
-				{@const y = typeof object === 'function' ? object(t).y : object.y}
+				{#if object.shape === 'dynamicPoint'}
+					{@const point = object.eval(t)}
+					{@const x = point.x}
+					{@const y = point.y}
 
-				<circle cx={x} cy={y} r="2" fill={colors[i % colors.length]} />
-				<g transform="matrix(1, 0, 0, -1, 0, 0)">
-					<text {x} y={-y} dx={2} dy={-2} fill={colors[i % colors.length]} style="font-size: 0.5em"
-						>{object.label}</text
-					>
-				</g>
+					<circle cx={x} cy={y} r="2" fill={colors[i % colors.length]} />
+					<g transform="matrix(1, 0, 0, -1, 0, 0)">
+						<text
+							{x}
+							y={-y}
+							dx={2}
+							dy={-2}
+							fill={colors[i % colors.length]}
+							style="font-size: 0.5em">{object.label}</text
+						>
+					</g>
+				{/if}
 			{/each}
 		</g>
 	</svg>

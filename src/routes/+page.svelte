@@ -5,5 +5,9 @@
     const scene = new Scene();
 </script>
 
+<svelte:head>
+    <title>Curve Playground</title>
+</svelte:head>
+
 <SvgRenderer {scene} />
 
