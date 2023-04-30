@@ -166,6 +166,7 @@ export class CubicScene implements Scene {
             this.A,
             this.B,
             this.C,
+            this.D,
             this.P,
             this.Q,
             this.R,
