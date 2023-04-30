@@ -25,6 +25,10 @@ export class Vector {
     get dimension() {
         return this.values.length;
     }
+
+    toSvg() {
+        return this.values.join('  ');
+    }
 }
 
 export class Polynomial {

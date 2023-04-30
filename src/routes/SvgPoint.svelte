@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Point } from './curves';
+	import type { Point } from './shapes';
 
 	export let point: Point;
 	export let label: undefined | string = undefined;

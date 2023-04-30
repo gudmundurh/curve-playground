@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import SvgLine from './SvgLine.svelte';
 	import SvgPoint from './SvgPoint.svelte';
-	import type { Scene } from './curves';
+	import type { Scene } from './shapes';
 
 	export let scene: Scene;
 
 	let t = 0;
-	let zoom = 2;
+	let zoom = 5;
 
 	const colors = ['red', 'blue', 'green', 'magenta', 'orange', 'olive', 'brown'];
 	let playing = false;
@@ -27,7 +26,7 @@
 
 		const time = Date.now() - animiationStart;
 
-		t = (time % 5000) / 5000;
+		t = (time % 7500) / 7500;
 
 		requestAnimationFrame(runAnimation);
 	};
@@ -36,7 +35,7 @@
 <div class="container">
 	<div class="controls">
 		t = <input type="number" min="0" step="0.05" max="1" bind:value={t} />
-		zoom = <input type="number" min="0.25" step="0.25" max="3" bind:value={zoom} />
+		zoom = <input type="number" min="0.25" step="0.25" max="6" bind:value={zoom} />
 
 		<button on:click={playPause}>play/pause</button>
 	</div>

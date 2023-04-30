@@ -1,8 +1,9 @@
 <script lang="ts">
 	import SvgRenderer from "./SvgRenderer.svelte";
-	import { CubicScene, QScene } from "./curves";
+	import { QuadraticScene  } from "./scenes";
     
-    const scene = new CubicScene();
+    // const scene = new CubicScene();
+    const scene = new QuadraticScene();
 </script>
 
 <svelte:head>
