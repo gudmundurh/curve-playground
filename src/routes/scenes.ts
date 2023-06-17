@@ -20,11 +20,17 @@ function lerp(p: Polynomial | Vector, q: Polynomial | Vector): Polynomial {
         .add(q.multiply(new Polynomial([V(0), V(1)])));
 }
 
-function toPoint(v: Vector): Point {
+function toPoint(v: Vector, label?: string, updateCallback?: () => void): Point {
     return {
         shape: "point",
         x: v.values[0],
         y: v.values[1],
+        update(x, y) {
+            v.values[0] = x
+            v.values[1] = y
+            updateCallback && updateCallback();
+        },
+        label
     };
 }
 
@@ -73,10 +79,19 @@ export class QuadraticScene implements Scene {
     B = new Vector([45, 60])
     C = new Vector([100, -35])
 
-    P = lerp(this.A, this.B)
-    Q = lerp(this.B, this.C)
+    P!: Polynomial;
+    Q!: Polynomial
+    R!: Polynomial
 
-    R = lerp(this.P, this.Q)
+    constructor() {
+        this.update();
+    }
+
+    update() {
+        this.P = lerp(this.A, this.B)
+        this.Q = lerp(this.B, this.C)
+        this.R = lerp(this.P, this.Q)
+    }
 
     get objects(): Shape[] {
         return [
@@ -88,9 +103,9 @@ export class QuadraticScene implements Scene {
             // { shape: 'path', path: `M ${this.A.toSvg()} Q ${this.B.toSvg()} ${this.C.toSvg()}` },
             createDynamicPath(this.R),
 
-            toDynamicPoint(this.A, 'A'),
-            toDynamicPoint(this.B, 'B'),
-            toDynamicPoint(this.C, 'C'),
+            toPoint(this.A, 'A', this.update.bind(this)),
+            toPoint(this.B, 'B', this.update.bind(this)),
+            toPoint(this.C, 'C', this.update.bind(this)),
             toDynamicPoint(this.P, 'P'),
             toDynamicPoint(this.Q, 'Q'),
             toDynamicPoint(this.R, 'R')]
@@ -104,16 +119,33 @@ export class CubicScene implements Scene {
     C = new Vector([130, 70])
     D = new Vector([180, -35])
 
-    P = lerp(this.A, this.B)
-    Q = lerp(this.B, this.C)
-    R = lerp(this.C, this.D)
+    P!: Polynomial
+    Q!: Polynomial
+    R!: Polynomial
+    S!: Polynomial
+    T!: Polynomial
+    U!: Polynomial
+    //Udiff!: Polynomial
 
-    S = lerp(this.P, this.Q)
-    T = lerp(this.Q, this.R)
+    constructor() {
+        this.update();
+    }
 
-    U = lerp(this.S, this.T)
+    update() {
+        this.P = lerp(this.A, this.B)
+        this.Q = lerp(this.B, this.C)
+        this.R = lerp(this.C, this.D)
+
+        this.S = lerp(this.P, this.Q)
+        this.T = lerp(this.Q, this.R)
+
+        this.U = lerp(this.S, this.T)
+
+        //this.Udiff = this.U.differentiate();
+    }
 
     get objects(): Shape[] {
+        const update = this.update.bind(this);
         return [
             toLine(this.A, this.B),
             toLine(this.B, this.C),
@@ -127,10 +159,13 @@ export class CubicScene implements Scene {
             createDynamicPath(this.U),
             // { shape: 'path', path: `M ${this.A.x} ${this.A.y} C ${this.B.x} ${this.B.y} ${this.C.x} ${this.C.y} ${this.D.x} ${this.D.y}` },
 
-            toDynamicPoint(this.A, 'A'),
-            toDynamicPoint(this.B, 'B'),
-            toDynamicPoint(this.C, 'C'),
-            toDynamicPoint(this.D, 'D'),
+            //createDynamicPath(this.Udiff),
+
+            toPoint(this.A, 'A', update),
+            toPoint(this.B, 'B', update),
+            toPoint(this.C, 'C', update),
+            toPoint(this.D, 'D', update),
+          
             toDynamicPoint(this.P, 'P'),
             toDynamicPoint(this.Q, 'Q'),
             toDynamicPoint(this.R, 'R'),

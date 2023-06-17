@@ -4,5 +4,30 @@
 
 body {
     margin: 0;
-    font-family: sans-serif;
+}
+
+body, input, button {
+    font-family: menlo, consolas, sans-serif;
+}
+
+.controls {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    flex-grow: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.controls input {
+    background: #444;
+    border: 1px solid #999;
+    color: #fff;
+}
+
+.controls .dot {
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    border-radius: 50%;
 }

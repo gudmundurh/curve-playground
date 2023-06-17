@@ -9,10 +9,10 @@
 	$: y = point.y;
 </script>
 
-<circle cx={x} cy={y} r="2" fill={color} />
+<circle cx={x} cy={y} r="1" fill={color} style="pointer-events: none" />
 
 <g transform="matrix(1, 0, 0, -1, 0, 0)">
 	{#if label}
-		<text {x} y={-y} dx={2} dy={-2} fill={color} style="font-size: 0.5em">{label}</text>
+		<text {x} y={-y} dx={2} dy={-2} fill={color} font-size="0.5rem">{label}</text>
 	{/if}
 </g>

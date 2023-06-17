@@ -1,4 +1,5 @@
 export type Point = {
+	update(x: number, y: number): void;
     x: number,
     y: number,
     label?: string,

@@ -79,4 +79,8 @@ export class Polynomial {
 
         return new Polynomial(r);
     }
+
+    differentiate(): Polynomial {
+        return new Polynomial(this.coefficients.slice(1));
+    }
 }

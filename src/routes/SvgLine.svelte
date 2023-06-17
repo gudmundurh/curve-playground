@@ -6,4 +6,4 @@
 	export let color: string;
 </script>
 
-<line x1={start.x} x2={end.x} y1={start.y} y2={end.y} stroke={color} stroke-width=".5" />
+<line x1={start.x} x2={end.x} y1={start.y} y2={end.y} stroke={color} stroke-width=".3" />
