@@ -1,33 +1,115 @@
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+:root {
+	--s1: 1rem;
+	--bg: #181818;
+	--fg: #ccc;
+
+	--panel-spacing: 1px;
+
+	--scene-bg: #1f1f1f;
+	--border-color: #2a2a2a;
+	--highlight: #0278d4;
+	--highlight-hover: #0a70c2;
 }
 
 body {
-    margin: 0;
+	margin: 0;
+	background: var(--border-color);
+	color: var(--fg);
 }
 
-body, input, button {
-    font-family: menlo, consolas, sans-serif;
+a {
+	color: var(--highlight);
+}
+
+body,
+input,
+button {
+	font-family: menlo, consolas, sans-serif;
+}
+
+input {
+	background: var(--border-color);
+	border: 1px solid #444;
+	color: var(--fg);
+}
+
+input:focus {
+	border-color: var(--highlight);
+}
+
+input:focus-visible {
+	outline: 0;
+}
+
+button {
+	border-radius: 0.25rem;
+	border: 1px solid var(--highlight);
+	background: var(--highlight);
+	color: #fff;
+}
+
+button:hover {
+	background: var(--highlight-hover);
+}
+
+button:focus {
+	outline: 1px solid var(--highlight);
+	outline-offset: 2px;
+}
+
+.sidebar {
+	background: var(--bg);
+	padding: var(--s1);
 }
 
 .controls {
-    background: #333;
-    color: #fff;
-    padding: 1rem;
-    flex-grow: 0;
-    display: flex;
-    gap: 1rem;
-}
-
-.controls input {
-    background: #444;
-    border: 1px solid #999;
-    color: #fff;
+	background: #333;
+	color: #fff;
+	padding: var(--s1);
+	flex-grow: 0;
+	display: flex;
+	gap: var(--s1);
 }
 
 .controls .dot {
-    display: inline-block;
-    width: 0.75em;
-    height: 0.75em;
-    border-radius: 50%;
+	display: inline-block;
+	width: 0.75em;
+	height: 0.75em;
+	border-radius: 50%;
+}
+
+/* Every-Layout classics */
+
+.with-sidebar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--panel-spacing);
+}
+
+.with-sidebar > :first-child {
+	flex-grow: 1;
+}
+
+.with-sidebar > :last-child {
+	flex-basis: 0;
+	flex-grow: 999;
+	min-inline-size: 50%;
+}
+
+.stack {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.stack > * {
+	margin-block: 0;
+}
+
+.stack > * + * {
+	margin-block-start: var(--s1, 1.5rem);
 }
