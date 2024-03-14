@@ -39,7 +39,7 @@
 	// y_new = b x_old + d y_old + f
 
 	let shiftX = 0;
-	let shiftY = 200;
+	let shiftY = 0;
 	const yFactor = -1;
 	$: matrix = [zoom * 1, 0, 0, zoom * yFactor, shiftX, shiftY];
 
@@ -80,7 +80,9 @@
 	const movePoint = (ev: MouseEvent) => {
 		if (!movingPoint) return;
 
-		const { x, y } = convertScreenToScene(ev.offsetX, ev.offsetY);
+		let { x, y } = convertScreenToScene(ev.offsetX, ev.offsetY);
+		x = Math.round(x * 100) / 100;
+		y = Math.round(y * 100) / 100;
 
 		movingPoint.update(x, y);
 		scene = scene;

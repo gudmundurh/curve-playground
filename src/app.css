@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,300&display=swap');
+
 * {
 	box-sizing: border-box;
 }
@@ -28,7 +30,17 @@ a {
 body,
 input,
 button {
-	font-family: menlo, consolas, sans-serif;
+	font-family: "Roboto Mono", consolas, sans-serif;
+	font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 300;
 }
 
 input {
@@ -90,11 +102,11 @@ button:focus {
 	gap: var(--panel-spacing);
 }
 
-.with-sidebar > :first-child {
+.with-sidebar> :first-child {
 	flex-grow: 1;
 }
 
-.with-sidebar > :last-child {
+.with-sidebar> :last-child {
 	flex-basis: 0;
 	flex-grow: 999;
 	min-inline-size: 50%;
@@ -106,10 +118,10 @@ button:focus {
 	justify-content: flex-start;
 }
 
-.stack > * {
+.stack>* {
 	margin-block: 0;
 }
 
-.stack > * + * {
+.stack>*+* {
 	margin-block-start: var(--s1, 1.5rem);
 }
