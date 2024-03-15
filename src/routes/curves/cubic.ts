@@ -81,6 +81,17 @@ export class CssCubicScene extends BaseCubicScene {
     }
 
     get objects(): Shape[] {
-        return [{ shape: 'path', path: `M 0 0 L 0 100 L 100 100 L 100 0 Z` } as Shape].concat(super.objects)
+        return [
+            { shape: 'path', path: `M 0 0 L 0 100 L 100 100 L 100 0 Z` } as Shape,
+            { shape: 'path', path: `M 0 -10 L 0 -20 L 100 -20 L 100 -10 Z` } as Shape,
+            {
+                shape: 'dynamicPath',
+                eval: (t: number) => {
+                    const v = this.U.eval(t);
+                    const x = (v.values[1]) * .9;
+                    return `M ${x} -10 l 10 0 l 0 -10 l -10 0 Z`;
+                }
+            } as Shape
+        ].concat(super.objects)
     }
 }

@@ -1,4 +1,4 @@
-import type { DynamicLine, DynamicPath, DynamicPoint, Point, Scene, Shape } from "../shapes";
+import type { DynamicLine, DynamicPath, DynamicPoint, MoveablePoint, Point, Scene, Shape } from "../shapes";
 import { Polynomial, Vector } from "../polynomials";
 
 export function toPolynomial(p: Polynomial | Vector): Polynomial {
@@ -20,18 +20,27 @@ export function lerp(p: Polynomial | Vector, q: Polynomial | Vector): Polynomial
         .add(q.multiply(new Polynomial([V(0), V(1)])));
 }
 
-export function toPoint(v: Vector, label?: string, updateCallback?: () => void): Point {
-    return {
-        shape: "point",
-        x: v.values[0],
-        y: v.values[1],
-        update(x, y) {
-            v.values[0] = x
-            v.values[1] = y
-            updateCallback && updateCallback();
-        },
-        label
-    };
+export function toPoint(v: Vector, label?: string, updateCallback?: () => void): MoveablePoint | Point {
+    if (updateCallback) {
+        return {
+            shape: "moveablePoint",
+            x: v.values[0],
+            y: v.values[1],
+            update(x, y) {
+                v.values[0] = x
+                v.values[1] = y
+                updateCallback();
+            },
+            label
+        };
+    } else {
+        return {
+            shape: "point",
+            x: v.values[0],
+            y: v.values[1],
+            label
+        };
+    }
 }
 
 export function toLine(p: Polynomial | Vector, q: Polynomial | Vector): DynamicLine {

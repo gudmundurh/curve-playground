@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { Point } from './shapes';
+	import type { MoveablePoint } from './shapes';
 
-	export let point: Point;
+	export let point: MoveablePoint;
 	export let label: undefined | string = undefined;
 	export let color: string;
 

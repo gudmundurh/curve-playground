@@ -3,7 +3,7 @@
 	import SvgDraggablePoint from './SvgDraggablePoint.svelte';
 	import SvgLine from './SvgLine.svelte';
 	import SvgPoint from './SvgPoint.svelte';
-	import { getBoundingBoxOfPoints, type Point, type Scene } from './shapes';
+	import type { MoveablePoint, Scene } from './shapes';
 
 	export let scene: Scene;
 
@@ -14,6 +14,7 @@
 	let playing = false;
 	let animiationStart = 0;
 	let svgElement: SVGElement | undefined;
+	let svgRootGroup: SVGGraphicsElement | undefined;
 
 	const playPause = () => {
 		playing = !playing;
@@ -38,28 +39,32 @@
 	// x_new = a x_old + c y_old + e
 	// y_new = b x_old + d y_old + f
 
-	let shiftX = 0;
-	let shiftY = 0;
+	let boundingBox = { x: 0, y: 0, width: 0, height: 0 };
+	let clientRect = { width: 0, height: 0 };
+
 	const yFactor = -1;
+
+	$: shiftX = clientRect.width / 2 - (boundingBox.width * zoom) / 2 - boundingBox.x * zoom;
+
+	$: shiftY =
+		clientRect.height / 2 -
+		(yFactor * boundingBox.height * zoom) / 2 -
+		yFactor * boundingBox.y * zoom;
+
 	$: matrix = [zoom * 1, 0, 0, zoom * yFactor, shiftX, shiftY];
 
 	const centerSceneOnViewport = () => {
-		const initialBoundingBox = getBoundingBoxOfPoints(scene.objects);
-
-		if (!svgElement) return;
-
-		const clientRect = svgElement.getBoundingClientRect();
-
-		shiftX =
-			clientRect.width / 2 -
-			((initialBoundingBox.x2 - initialBoundingBox.x1) * zoom) / 2 -
-			initialBoundingBox.x1 * zoom;
-
-		shiftY =
-			clientRect.height / 2 -
-			yFactor * (((initialBoundingBox.y2 - initialBoundingBox.y1) * zoom) / 2) -
-			yFactor * initialBoundingBox.y1 * zoom;
+		if (!svgElement || !svgRootGroup) return;
+		clientRect = svgElement.getBoundingClientRect();
+		boundingBox = svgRootGroup.getBBox();
 	};
+
+	$: {
+		if (scene && typeof window !== 'undefined') {
+			// Schedule update to allow the SVG to be updated prior to centering
+			requestAnimationFrame(centerSceneOnViewport);
+		}
+	}
 
 	onMount(centerSceneOnViewport);
 
@@ -81,19 +86,19 @@
 		if (!movingPoint) return;
 
 		let { x, y } = convertScreenToScene(ev.offsetX, ev.offsetY);
-		x = Math.round(x * 100) / 100;
-		y = Math.round(y * 100) / 100;
+		x = Math.round(x * 10) / 10;
+		y = Math.round(y * 10) / 10;
 
 		movingPoint.update(x, y);
 		scene = scene;
 	};
 
-	let movingPoint: Point | null = null;
+	let movingPoint: MoveablePoint | null = null;
 
-	const startMove = (point: Point) => {
+	const startMove = (point: MoveablePoint) => {
 		movingPoint = point;
 	};
-	const stopMove = (point: Point) => {
+	const stopMove = (point: MoveablePoint) => {
 		movingPoint = null;
 	};
 </script>
@@ -108,7 +113,7 @@
 
 	<svg on:mousemove={movePoint} bind:this={svgElement}>
 		{#if svgElement}
-			<g transform={`matrix(${matrix.join(',')})`}>
+			<g transform={`matrix(${matrix.join(',')})`} bind:this={svgRootGroup}>
 				<!-- <line x1="-1000" x2="1000" y1="0" y2="0" stroke="black" stroke-width=".5" />
 			<line x1="0" x2="0" y1="-1000" y2="1000" stroke="black" stroke-width=".5" /> -->
 
@@ -116,6 +121,8 @@
 					{#if object.shape === 'dynamicPoint'}
 						<SvgPoint point={object.eval(t)} label={object.label} color="#0278d4" />
 					{:else if object.shape === 'point'}
+						<SvgPoint point={object} label={object.label} color={colors[i % colors.length]} />
+					{:else if object.shape === 'moveablePoint'}
 						<SvgDraggablePoint
 							on:mousedown={() => startMove(object)}
 							on:mouseup={() => stopMove(object)}
@@ -137,7 +144,7 @@
 
 	<div class="controls">
 		{#each scene.objects as object, i}
-			{#if object.shape === 'point'}
+			{#if object.shape === 'point' || object.shape === 'moveablePoint'}
 				<span>
 					<span style:background-color={colors[i % colors.length]} class="dot" />
 					{object.label}
