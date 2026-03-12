@@ -58,7 +58,8 @@ export function toDynamicPoint(p: Polynomial | Vector, label: string): DynamicPo
     const pp = toPolynomial(p);
     return {
         shape: "dynamicPoint",
-        eval: t => toPoint(pp.eval(t))
+        label,
+        eval: t => toPoint(pp.eval(t), label)
     }
 }
 

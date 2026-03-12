@@ -61,4 +61,31 @@ describe('Polynomial tests', () => {
         const r = p.multiply(q);
         expect(r.coefficients).toEqual([V(2), V(0), V(-2)]);
     });
+
+    it('differentiating constant poly gives zero', () => {
+        const p = new Polynomial([V(5)]);
+        const dp = p.differentiate();
+        expect(dp.coefficients).toEqual([V(0)]);
+    });
+
+    it('differentiating linear poly gives constant', () => {
+        // p(t) = 2 + 3t → p'(t) = 3
+        const p = new Polynomial([V(2), V(3)]);
+        const dp = p.differentiate();
+        expect(dp.coefficients).toEqual([V(3)]);
+    });
+
+    it('differentiating quadratic poly multiplies by power index', () => {
+        // p(t) = 1 + 2t + 3t² → p'(t) = 2 + 6t
+        const p = new Polynomial([V(1), V(2), V(3)]);
+        const dp = p.differentiate();
+        expect(dp.coefficients).toEqual([V(2), V(6)]);
+    });
+
+    it('differentiating cubic poly', () => {
+        // p(t) = 1 + 0t + 0t² + 4t³ → p'(t) = 0 + 0t + 12t²
+        const p = new Polynomial([V(1), V(0), V(0), V(4)]);
+        const dp = p.differentiate();
+        expect(dp.coefficients).toEqual([V(0), V(0), V(12)]);
+    });
 });

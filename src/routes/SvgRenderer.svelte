@@ -12,7 +12,7 @@
 
 	const colors = ['#12A8CD', '#E5E50E', '#0EBC79', '#E37834', '#A074C4'];
 	let playing = false;
-	let animiationStart = 0;
+	let animationStart = 0;
 	let svgElement: SVGElement | undefined;
 	let svgRootGroup: SVGGraphicsElement | undefined;
 
@@ -20,7 +20,7 @@
 		playing = !playing;
 
 		if (playing) {
-			animiationStart = Date.now();
+			animationStart = Date.now();
 			requestAnimationFrame(runAnimation);
 		}
 	};
@@ -28,7 +28,7 @@
 	const runAnimation = () => {
 		if (!playing) return;
 
-		const time = Date.now() - animiationStart;
+		const time = Date.now() - animationStart;
 
 		t = (time % 7500) / 7500;
 
