@@ -81,6 +81,11 @@ export class Polynomial {
     }
 
     differentiate(): Polynomial {
-        return new Polynomial(this.coefficients.slice(1));
+        if (this.coefficients.length === 1)
+            return new Polynomial([Vector.zero(this.coefficientDimension)]);
+
+        return new Polynomial(
+            this.coefficients.slice(1).map((c, i) => c.multiply(i + 1))
+        );
     }
 }

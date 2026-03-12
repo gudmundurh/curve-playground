@@ -40,22 +40,3 @@ export type Shape = Point | DynamicPoint | MoveablePoint | DynamicLine | Path | 
 export interface Scene {
     get objects(): Shape[]
 }
-
-export function getBoundingBoxOfPoints(shapes: Shape[]) {
-    let [x1, y1, x2, y2] = [Infinity, Infinity, -Infinity, -Infinity];
-
-    for (let i = 0; i < shapes.length; i++) {
-        if (shapes[i].shape !== 'point' && shapes[i].shape !== 'moveablePoint')
-            continue;
-
-        const p = shapes[i] as Point;
-
-        x1 = Math.min(x1, p.x);
-        y1 = Math.min(y1, p.y);
-
-        x2 = Math.max(x2, p.x);
-        y2 = Math.max(y2, p.y);
-    }
-
-    return { x1, y1, x2, y2 };
-}
