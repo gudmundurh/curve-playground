@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		
+		<link href="./_app/immutable/assets/0.a29299e9.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.60a47d57.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.b42a0dec.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.a02afe06.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.2687dc42.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.0dd7d171.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.69f0494c.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.8de1d44c.js"><title>Curve Playground</title><!-- HEAD_svelte-16pwjw8_START --><!-- HEAD_svelte-16pwjw8_END -->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+
+
+
+
+
+<div class="with-sidebar"><div class="sidebar stack"><h2>Scene</h2>
+		<button class="svelte-fblvdj active">Cubic</button><button class="svelte-fblvdj">Quadratic</button><button class="svelte-fblvdj">CSS ease</button><button class="svelte-fblvdj">CSS ease-in</button><button class="svelte-fblvdj">CSS ease-out</button><button class="svelte-fblvdj">CSS ease-in-out</button></div>
+	<div class="container svelte-rjvs9c"><div class="controls svelte-rjvs9c">t = <input type="range" min="0" step="0.01" max="1" style="width: 300px" value="0">
+		zoom = <input type="number" min="0.25" step="0.25" max="6" value="5">
+
+		<button>play/pause</button></div>
+
+	<svg class="svelte-rjvs9c"></svg>
+
+	<div class="controls svelte-rjvs9c"><span><span class="dot" style="background-color: #0EBC79;"></span>
+					A
+					10
+					10
+				</span><span><span class="dot" style="background-color: #E37834;"></span>
+					B
+					45
+					60
+				</span><span><span class="dot" style="background-color: #A074C4;"></span>
+					C
+					130
+					70
+				</span><span><span class="dot" style="background-color: #12A8CD;"></span>
+					D
+					180
+					-35
+				</span></div></div>
+
+
+</div>
+
+
+			
+			<script>
+				{
+					__sveltekit_1e3gn9v = {
+						assets: "/curve-playground/pr-preview",
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.b42a0dec.js"),
+						import("./_app/immutable/entry/app.0dd7d171.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
